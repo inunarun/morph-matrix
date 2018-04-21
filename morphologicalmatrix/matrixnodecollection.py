@@ -103,6 +103,33 @@ class MatrixNodeCollection(MatrixNode, list):
         """
         return False
 
+    def has_selection(self) -> bool:
+        """
+
+        :return:
+        :rtype: bool
+        """
+        child_selection = True
+        my_selection = False
+        visited = False
+        for entity in self:
+            if not child_selection and my_selection:
+                break
+
+            if isinstance(entity, MatrixNodeCollection):
+                if child_selection and not entity.has_selection():
+                    child_selection = False
+            else:
+                visited = True
+                if not my_selection and entity.is_selected():
+                    my_selection = True
+
+        if visited:
+            has_selection = child_selection and my_selection
+        else:
+            has_selection = child_selection
+        return has_selection
+
     def append(self, node: Union[MatrixNode, "MatrixNodeCollection"]):
         """
 

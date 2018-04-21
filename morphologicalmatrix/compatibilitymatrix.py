@@ -61,6 +61,27 @@ class CompatibilityMatrix(np.ndarray):
         """
         self[:old_matrix.shape[0], :old_matrix.shape[1]] = old_matrix
 
+    def evaluate_compatibility(self, selection: List["MatrixNode"]) -> bool:
+        """
+
+        :param selection:
+        :type selection: list of `morphologicalmatrix.matrixnode.MatrixNode`
+
+        :return:
+        :rtype: bool
+        """
+        state_vector = np.zeros((self.shape[0], ))
+        for component in selection:
+            state_vector[component.index()] = 1.
+        for component in selection:
+            compatiblity = component.get_compatibilities()
+            compatibility_value = np.dot(1 - state_vector, compatiblity)
+            if compatibility_value >= 1:
+                return False
+
+        else:
+            return True
+
     # def to_json(self) -> Dict:
     #     """
 

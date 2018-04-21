@@ -80,6 +80,14 @@ class MorphologicalMatrix(object):
     #         "system": self.system().to_json(),
     #     }
 
+    def is_fully_defined(self) -> bool:
+        """
+
+        :return:
+        :rtype: bool
+        """
+        return self.system().has_selection()
+
     def save(self, filename: str):
         """
 
